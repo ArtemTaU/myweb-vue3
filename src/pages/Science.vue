@@ -227,10 +227,6 @@ a.custom-reset {
   .logo-style {
       height: 15px;
   }
-  .img-grid[data-v-840a37c4] {
-      min-height: 40vh;
-      padding: 4vw;
-  }
   .project-link{
     max-width: 87vw;
     white-space: nowrap;

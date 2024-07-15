@@ -252,10 +252,11 @@ a.custom-reset {
   .logo-style {
       height: 15px;
   }
-  .img-grid {
-      min-height: 40vh !important;
-      padding: 4vw;
+  .grid-item {
+      width: 90vw;
       min-height: 40vh;
+      padding: 2vh 20px;
+      padding-bottom: 0;
   }
 }
 </style>
