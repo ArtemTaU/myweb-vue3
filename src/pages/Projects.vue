@@ -252,8 +252,8 @@ a.custom-reset {
   .logo-style {
       height: 15px;
   }
-  .img-grid[data-v-840a37c4] {
-      min-height: 40vh;
+  .img-grid {
+      min-height: 40vh !important;
       padding: 4vw;
       min-height: 40vh;
   }
