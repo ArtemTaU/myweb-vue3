@@ -24,9 +24,12 @@ export default {
   --main-box-outset-shadow: 0 0 10px 3px rgb(255 255 255 / 89%);
   --base-font-size: 18px;
   --btn-font: 16px;
+  --btn-font-mobile: 2vh;
   --hover-background-color: rgb(255 255 255 / 89%); 
   --hover-text-color: rgb(15, 15, 15);
   --bottom-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.3);  
+  --p-font-size: 20px;
+  --p-font-size-mobile: 2vh;
 }
 
 ::-webkit-scrollbar {
@@ -71,7 +74,23 @@ h2 {
 }
 
 h3 {
-  margin-top: 10px;
+  margin-top: 0px;
   font-size: 24px;
 }
+
+@media (max-width: 480px) {
+  h2 {
+    margin-top: 0px;
+    font-size: 2.8vh;
+  }
+  h3 {
+    margin-top: 0px;
+    font-size: 2.5vh;
+  }
+  p {
+    font-size: var(--p-font-size-mobile);
+    margin-top: 15px;
+  }
+}
+
 </style>

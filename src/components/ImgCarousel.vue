@@ -101,4 +101,12 @@ export default {
     box-shadow: 0 0 10px 3px rgb(88 88 88 / 73%);
 }
 
+@media (max-width: 480px) {
+    .carousel-image {
+        max-height: 25vh;
+    }
+    .carousel-image {
+        border-radius: 10px;
+    }
+}
 </style>

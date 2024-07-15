@@ -28,4 +28,10 @@ export default {
     display: flex;
     gap: 10px;
 }
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 20px;
+    }
+}
 </style>

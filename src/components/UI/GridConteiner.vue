@@ -1,5 +1,5 @@
 <template>
-    <div :class="cssClass" :style="gridStyle">
+    <div :class="cssClass">
       <slot></slot>
     </div>   
   </template>
@@ -10,21 +10,7 @@
     props: {
       cssClass: {
         type: String,
-        default: 'grid-container'
       },
-      columns: {
-        type: String,
-        default: '1fr 1fr'
-      }
-    },
-    computed: {
-      gridStyle() {
-        return {
-          display: 'grid',
-          gridTemplateColumns: this.columns,
-          gap: '30px'
-        };
-      }
     }
   };
   </script>

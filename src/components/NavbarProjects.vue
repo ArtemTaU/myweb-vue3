@@ -65,12 +65,18 @@ export default {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--p-font-size)
 }
 
 .navbarPrjcts li a:hover{
   background-color: var(--hover-background-color);
   color: var(--hover-text-color);
   border-radius: 10px;
+  font-size: var(--p-font-size)
 }
 
 
@@ -78,6 +84,7 @@ export default {
   background-color: #111;
   color: var(--text-color);
   border-radius: 10px;
+  
 }
 
 .dropdown {
@@ -113,5 +120,25 @@ export default {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+@media (max-width: 480px) {
+    .carousel-image {
+        max-height: 30vh;
+    }
+    .carousel-image {
+        border-radius: 10px;
+    }
+    .navbarPrjcts li a, .dropbtn {
+      padding: 10px 10px;
+      max-width: 150px;
+      font-size: var(--p-font-size-mobile)
+    }
+    .navbarPrjcts li a:hover{
+      font-size: var(--p-font-size-mobile)
+    }
+    .dropdown-content {
+      min-width: 150px;
+    }
 }
 </style>

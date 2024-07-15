@@ -51,6 +51,8 @@ export const allProjects =
         stack: 'Vue.js',
         images: [
           'personalwebsite/1.png',
+          'personalwebsite/2.png',
+          'personalwebsite/3.png',          
         ]
       }
     ]

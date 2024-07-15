@@ -27,4 +27,10 @@ export default {
     color: var(--hover-text-color);
     border-color: var(--hover-text-color);
 }
+
+@media (max-width: 480px) {
+    .btn {
+        font-size: var(--btn-font-mobile);
+    }
+}
 </style>

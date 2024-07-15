@@ -1,6 +1,6 @@
 <template>
     <div class="main-page">
-        <my-grid-container :columns="'2fr 4fr'">
+        <my-grid-container class="grid-container">
             <div class="grid-item">
                 <img src="@/assets/images/my_photo.jpg" alt="my-photo" class="my-image">
             </div>
@@ -53,4 +53,26 @@ export default {
     border-radius: 50%;
 }  
 
+@media (max-width: 480px) {
+    .main-page{
+        padding: 2vh 5vw;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .grid-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2vh 20px;
+        padding-bottom: 0;
+    }
+
+    .my-image {   
+        width: 60%;
+    }
+}
 </style>

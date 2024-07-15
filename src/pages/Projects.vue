@@ -7,7 +7,7 @@
         />
         <div v-for="(project, index) in projects"> 
           <div v-if="index % 2 === 0">    
-            <my-grid-container :columns="columsWidth(index)" :id="'project-' + index" cssClass="grid-projects">
+            <my-grid-container :id="'project-' + index" :cssClass=gridClass(index)>
                 <div class="grid-item">    
                     <h2> {{ project.name }} </h2>  
                     <p> {{ project.description }} </p> 
@@ -31,7 +31,7 @@
             </my-grid-container>
           </div>
           <div v-else>    
-            <my-grid-container :columns="columsWidth(index)" :id="'project-' + index" cssClass="grid-projects">
+            <my-grid-container :id="'project-' + index" :cssClass=gridClass(index)>
                 <div class="grid-item img-grid">
                     <ImgCarousel :items="project">
                     </ImgCarousel>          
@@ -77,6 +77,7 @@ export default {
             currentItemIndex: 0,
             isScrolling: false,
             hasScrollHandler: false,
+            touchStartY: 0,
         } 
     },
     methods: {
@@ -93,12 +94,12 @@ export default {
       getTechnologyLink(tech) {
         return this.technologies[tech] ? this.technologies[tech].link : '#';
       },
-      columsWidth(index) {
+      gridClass(index) {
         if (index  % 2 === 0){
-            return '2fr 3fr'
+            return "grid-projects grid-el left" 
         }
         else {
-            return '3fr 2fr'          
+            return "grid-projects grid-el right"           
         }
       },
       scrollToProject(index) {
@@ -114,36 +115,54 @@ export default {
         };
       },
       handleScroll(event) {
-        if (this.isScrolling) return;
-        this.isScrolling = true;
+          if (this.isScrolling) return;
+          this.isScrolling = true;
 
-        const delta = Math.sign(event.deltaY);
-        if (delta > 0 && this.currentItemIndex < this.projects.length - 1) {
-            this.currentItemIndex++;
-            this.scrollToProject(this.currentItemIndex);
-        } else if (delta < 0 && this.currentItemIndex > 0) {        
-            if (this.currentItemIndex!==0){
-            this.currentItemIndex--;
-            this.scrollToProject(this.currentItemIndex);
-            };        
-        }
-        setTimeout(() => {
-            this.isScrolling = false;
-            }, 150);
+          const delta = Math.sign(event.deltaY || this.touchDelta);
+          if (delta > 0 && this.currentItemIndex < this.projects.length - 1) {
+              this.currentItemIndex++;
+              this.scrollToProject(this.currentItemIndex);
+          } else if (delta < 0 && this.currentItemIndex > 0) {
+              if (this.currentItemIndex !== 0) {
+                  this.currentItemIndex--;
+                  this.scrollToProject(this.currentItemIndex);
+              }
+          }
+
+          setTimeout(() => {
+              this.isScrolling = false;
+          }, 250);
+      },
+      handleTouchStart(event) {
+          this.touchStartY = event.touches[0].clientY;
+      },
+
+      handleTouchEnd(event) {
+          this.touchEndY = event.changedTouches[0].clientY;
+          this.touchDelta = this.touchStartY - this.touchEndY;
+          this.handleScroll(event);
       },
       addScrollHandler() {
-        if (!this.hasScrollHandler) {
-            this.debouncedHandleScroll = this.debounce(this.handleScroll, 100);
-            window.addEventListener('wheel', this.debouncedHandleScroll);
-            this.hasScrollHandler = true;
-        }
+          if (!this.hasScrollHandler) {
+              this.debouncedHandleScroll = this.debounce(this.handleScroll, 100);
+              this.boundHandleTouchStart = this.handleTouchStart.bind(this);
+              this.boundHandleTouchEnd = this.handleTouchEnd.bind(this);
+
+              window.addEventListener('wheel', this.debouncedHandleScroll);
+              window.addEventListener('touchstart', this.boundHandleTouchStart);
+              window.addEventListener('touchend', this.boundHandleTouchEnd);
+              this.hasScrollHandler = true;
+          }
       },
-      removeScrollHandler() {      
-        if (this.hasScrollHandler) {
-            window.removeEventListener('wheel', this.debouncedHandleScroll);
-            this.hasScrollHandler = false;
-        }
-      }
+
+      removeScrollHandler() {
+          if (this.hasScrollHandler) {
+              window.removeEventListener('wheel', this.debouncedHandleScroll);
+              window.removeEventListener('touchstart', this.boundHandleTouchStart);
+              window.removeEventListener('touchend', this.boundHandleTouchEnd);
+              this.hasScrollHandler = false;
+          }
+      },
     },
   mounted() {
     this.addScrollHandler();
@@ -161,63 +180,22 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  background-color: #333;
-}
-
-.navbar li {
-  float: left;
-}
-
-.navbar li a, .dropbtn {
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.navbar li a:hover, .dropdown:hover .dropbtn {
-  background-color: #111;
-}
-
-.dropdown {
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
 .grid-projects{
     padding: 10vh 8vw;
     min-height: 90vh;
     align-items: start;
     background: linear-gradient(to bottom, rgb(30, 0, 255) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgb(30, 0, 255) 100%);
+}
+
+.grid-el{
+  display: grid;  
+  gap: 30px
+}
+.grid-el.left{
+  grid-template-columns: 2fr 3fr;
+}
+.grid-el.right{
+  grid-template-columns: 3fr 2fr;
 }
 
 a.custom-reset {
@@ -245,5 +223,38 @@ a.custom-reset {
 .img-grid {
     display: flex;
     justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .grid-projects{
+      padding: 4vh 10vw;
+      min-height: 100vh;
+      align-items: start;
+      background: linear-gradient(to bottom, rgb(30, 0, 255) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgb(30, 0, 255) 100%);
+  }
+  .grid-el{
+    display: grid;  
+    gap: 10px
+  }
+  .grid-el.left{
+    grid-template-columns: 1fr;
+  }
+  .grid-el.right{
+    grid-template-columns: 1fr;
+  }
+  a.custom-reset {
+    font-size: var(--p-font-size-mobile);
+  }
+  .tech-item {
+    margin-right: 10px; 
+    margin-top: 10px;
+  }
+  .logo-style {
+      height: 15px;
+  }
+  .img-grid[data-v-840a37c4] {
+      min-height: 40vh;
+      padding: 4vw;
+  }
 }
 </style>
