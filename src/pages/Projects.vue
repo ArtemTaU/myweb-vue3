@@ -255,6 +255,7 @@ a.custom-reset {
   .img-grid[data-v-840a37c4] {
       min-height: 40vh;
       padding: 4vw;
+      min-height: 40vh;
   }
 }
 </style>
